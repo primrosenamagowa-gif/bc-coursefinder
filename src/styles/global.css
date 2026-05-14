@@ -1,0 +1,89 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bc-navy:       #9F0710;
+  --bc-navy-deep:   #9F0710;
+  --bc-navy-mid:    #254d8f;
+  --bc-gold:        #e8a422;
+  --bc-gold-hover:  #d4921a;
+  --bc-gold-light:  #fdf3e0;
+  --bc-gold-pale:   #fef9f0;
+
+  --surface-0:      #ffffff;
+  --surface-1:      #f8f9fb;
+  --surface-2:      #f1f3f7;
+  --surface-3:      #e8eaf0;
+
+  --text-primary:   #0d1b2e;
+  --text-secondary: #4a5568;
+  --text-muted:     #8896a8;
+  --text-hint:      #b0bec5;
+
+  --border-light:   #e9ecf1;
+  --border-mid:     #d4d9e3;
+  --border-focus:   #1a3a6b;
+
+  --success:        #16a34a;
+  --success-light:  #f0fdf4;
+  --warning:        #d97706;
+  --error:          #dc2626;
+
+  --sidebar-width:  272px;
+  --topbar-height:  60px;
+  --radius-sm:      8px;
+  --radius-md:      12px;
+  --radius-lg:      16px;
+  --radius-xl:      20px;
+  --radius-full:    9999px;
+
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+  --shadow-lg:  0 10px 40px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.06);
+
+  --font-display: 'Sora', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+
+  --ease-fast: 0.12s ease;
+  --ease-mid:  0.22s ease;
+  --ease-slow: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html, body, #root { height: 100%; overflow: hidden; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--surface-1);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+button { font-family: var(--font-body); cursor: pointer; border: none; background: none; }
+textarea, input { font-family: var(--font-body); }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-hint); }
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
