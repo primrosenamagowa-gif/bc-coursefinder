@@ -38,3 +38,87 @@
   .topbar { padding: 0 16px; }
   .topbar__subtitle, .topbar__count { display: none; }
 }
+
+.aps-dropdown {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  width: 320px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  z-index: 999;
+}
+
+.aps-container h2 {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.aps-subject {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.aps-subject select,
+.aps-subject input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.aps-container button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: #9b0000;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.aps-dropdown {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  width: 320px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  z-index: 999;
+}
+
+.aps-container h2 {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.aps-subject {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.aps-subject select,
+.aps-subject input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.aps-container button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: #9b0000;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}

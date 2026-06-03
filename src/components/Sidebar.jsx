@@ -1,13 +1,14 @@
 import React from 'react';
+import QRCode from 'react-qr-code';
 import './Sidebar.css';
 
 export default function Sidebar({ history, activeChatId, onNewChat, onSelectChat }) {
   return (
     <aside className="sidebar">
       <div className="sidebar__logo">
-        <div className="sidebar__logo-icon"><span><img src="images.png" width="38" height="45" alt="BC CourseFinder" /></span></div>
-        <div className="sidebar__logo-text text color: #FFFF00">
-          <p className="sidebar__logo-title">BC CourseFinder™ </p>
+        <div className="sidebar__logo-icon"><span><img src="images.png" width="38" height="45" alt="CourseFinder Logo" /></span></div>
+        <div className="sidebar__logo-text">
+          <p className="sidebar__logo-title">CourseFinder™</p>
           <p className="sidebar__logo-sub">Belgium Campus · IT</p>
         </div>
       </div>
@@ -19,6 +20,7 @@ export default function Sidebar({ history, activeChatId, onNewChat, onSelectChat
         </svg>
         New Conversation
       </button>
+ 
 
       <div className="sidebar__history-section">
         {history.length > 0 && <p className="sidebar__history-label">Recent</p>}
@@ -45,9 +47,10 @@ export default function Sidebar({ history, activeChatId, onNewChat, onSelectChat
       <div className="sidebar__footer">
         <div className="sidebar__footer-badge">
           <span className="sidebar__status-dot" />
-          AI Agent 
-        </div>
-        <p className="sidebar__footer-copy">Belgium Campus.</p>
+          AI Agent Active
+        </div>        <div className="sidebar__qr">
+          <QRCode value="https://vercel.com/website11/bc-course-finderss/5VEKVJWVxgRG21bXZV1Xpi2ixXmQ" size={80} />
+        </div>        <p className="sidebar__footer-copy">Belgium Campus · v1.0</p>
       </div>
     </aside>
   );

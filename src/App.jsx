@@ -8,6 +8,7 @@ import ChatInput       from './components/ChatInput';
 import ErrorBanner     from './components/ErrorBanner';
 import { useChat }     from './hooks/useChats';
 import { useChatHistory } from './hooks/useChatHistory';
+import APSCalculator from "./APSCalculator";
 import './styles/global.css';
 import './App.css';
 
@@ -16,6 +17,7 @@ export default function App() {
   const { history, activeChatId, addChat, setActive }              = useChatHistory();
   const chatBottomRef = useRef(null);
   const [localError, setLocalError] = useState(null);
+  const [showAPS, setShowAPS] = useState(false);
   const hasLoggedRef = useRef(false);
 
   useEffect(() => {
@@ -55,9 +57,17 @@ export default function App() {
         onSelectChat={handleSelectChat}
       />
       <div className="app-main">
-        <TopBar messageCount={messages.length} />
+        <TopBar
+  messageCount={messages.length}
+  onToggleAPS={() => setShowAPS(!showAPS)}
+/>
         <div className="app-chat-area" role="log" aria-live="polite" aria-label="Conversation">
           <div className="app-chat-inner">
+            {showAPS && (
+  <div className="aps-dropdown">
+    <APSCalculator />
+  </div>
+)}
             {showWelcome && <WelcomeScreen onSuggestionClick={handleSend} />}
             {messages.map((msg) => (
               <Message key={msg.id} role={msg.role} content={msg.content} />

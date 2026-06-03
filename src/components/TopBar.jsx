@@ -1,7 +1,16 @@
 import React from 'react';
 import './TopBar.css';
+import { logoutUser } from '../auth/authService';
+import { useNavigate } from 'react-router-dom';
 
-export default function TopBar({ messageCount }) {
+export default function TopBar({ messageCount, onToggleAPS })  {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logoutUser();
+    navigate('/login');
+  };
+
   return (
     <header className="topbar">
       <div className="topbar__left">
@@ -16,13 +25,25 @@ export default function TopBar({ messageCount }) {
           <p className="topbar__subtitle">AI Career Guidance · Belgium Campus IT Programmes</p>
         </div>
       </div>
-      <div className="topbar__right">
-        {messageCount > 0 && <span className="topbar__count">{messageCount} messages</span>}
-        <div className="topbar__badge">
-          <span className="topbar__badge-dot" />
-          Matric IT Guide
-        </div>
-      </div>
+   <div className="topbar__right">
+
+  <button
+    className="topbar__badge"
+    onClick={onToggleAPS}
+  >
+    <span className="topbar__badge-dot" />
+    APS Calculator
+  </button>
+
+  <button
+    className="topbar__badge"
+    onClick={handleLogout}
+  >
+    Logout
+  </button>
+
+</div> 
+      
     </header>
   );
 }

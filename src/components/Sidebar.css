@@ -37,7 +37,7 @@
 .sidebar__logo-title {
   font-family: var(--font-display);
   font-weight: 700; font-size: 13.5px;
-  color: #FFFF10; letter-spacing: 0.01em;
+  color: #FFFF00; letter-spacing: 0.01em;
 }
 
 .sidebar__logo-sub {
@@ -146,4 +146,10 @@
 
 .sidebar__footer-copy {
   font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 0.03em;
+}
+
+.sidebar__qr {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
 }
