@@ -23,23 +23,31 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Message is required.' });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-  console.log('GEMINI key present:', !!apiKey, 'GEMINI_API_KEY:', !!process.env.GEMINI_API_KEY, 'VITE_GEMINI_API_KEY:', !!process.env.VITE_GEMINI_API_KEY);
+  const apiKey = process.env.GENERATIVE_API_KEY || process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+  console.log('GEMINI key present:', !!apiKey, 'GENERATIVE_API_KEY:', !!process.env.GENERATIVE_API_KEY, 'GOOGLE_API_KEY:', !!process.env.GOOGLE_API_KEY, 'GEMINI_API_KEY:', !!process.env.GEMINI_API_KEY, 'VITE_GEMINI_API_KEY:', !!process.env.VITE_GEMINI_API_KEY);
 
   if (!apiKey) {
-    return res.status(500).json({ error: 'Server is missing GEMINI_API_KEY.' });
+    return res.status(500).json({ error: 'Server is missing a valid generative AI API key.' });
+  }
+
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  if (apiKey.startsWith('ya29.')) {
+    headers.Authorization = `Bearer ${apiKey}`;
+  } else {
+    headers['x-goog-api-key'] = apiKey;
   }
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
-          contents: [{ role: 'user', text: message }],
+          contents: [{ text: message }],
         }),
       }
     );
