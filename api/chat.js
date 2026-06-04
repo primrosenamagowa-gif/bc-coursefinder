@@ -1,5 +1,3 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
 async function parseJsonBody(req) {
   if (req.body) return req.body;
 
@@ -33,15 +31,26 @@ export default async function handler(req, res) {
   }
 
   try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-    const result = await model.generateContent({
-      contents: [{ role: 'user', text: message }],
-    });
-    const response = await result.response;
-    const reply = typeof response?.text === 'function'
-      ? response.text()
-      : response?.text || 'Sorry, I could not generate a response.';
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{ role: 'user', text: message }],
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData?.error?.message || `HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || data?.output?.[0]?.content?.[0]?.text || 'Sorry, I could not generate a response.';
 
     return res.status(200).json({ reply });
   } catch (error) {

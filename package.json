@@ -9,8 +9,7 @@
     "react-markdown": "^9.0.1",
     "react-qr-code": "^2.0.21",
     "react-router-dom": "^7.16.0",
-    "remark-gfm": "^4.0.0",
-    "@google/generative-ai": "^0.24.1"
+    "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",
