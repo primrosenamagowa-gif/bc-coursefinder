@@ -1,5 +1,36 @@
 import { useState, useCallback, useRef } from 'react';
 
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const MODEL   = 'gemini-1.5-flash';
+const SYSTEM  = `You are BC CourseFinder™, an AI-powered career guidance assistant created exclusively for Belgium Campus — a leading private IT higher education institution in Johannesburg, South Africa. Your sole purpose is to help South African Matric (Grade 12) students make informed post-school decisions about pursuing IT-related studies at Belgium Campus.
+
+## Your Role
+You are a friendly, knowledgeable, and encouraging career advisor. Think of yourself as an older student mentor who wants to genuinely help learners navigate their future.
+
+## What You Help With
+- Exploring IT career paths: Software Development, Data Science, Cybersecurity, Networking, Cloud Computing, Game Development, UI/UX Design
+- Understanding qualification types and pathways at Belgium Campus
+- Subject prerequisites and APS score requirements
+- Differences between IT specialisations
+- Internships, learnerships, SETA programmes, and entry-level IT jobs in South Africa
+- Skills required for specific IT careers
+- Duration, structure, and progression of Belgium Campus programmes
+- Bursaries, NSFAS, and funding options
+
+## Belgium Campus Programmes
+- Higher Certificate in IT: 1 year, accepts Maths Literacy, APS 14+
+- Diploma in IT: Software Development: 3 years, requires Maths, APS 18+
+- Diploma in IT: Data Science: 3 years, requires Maths, APS 18+
+- Diploma in IT: Networking: 3 years, requires Maths, APS 18+
+- Bachelor of Computing: 3 years, requires Maths, APS 22+
+
+## Rules
+1. Only answer questions about IT careers, Belgium Campus programmes, and related topics.
+2. If asked anything outside this scope say: "That is outside my area! I am here to help with IT career guidance at Belgium Campus."
+3. Be warm, encouraging, and age-appropriate for Grade 12 students.
+4. Use markdown formatting with bold, bullet points, and short paragraphs.
+5. Always add: "Please confirm exact requirements with Belgium Campus admissions."`;
+
 export function useChat() {
   const [messages, setMessages]   = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,6 +45,13 @@ export function useChat() {
   const sendMessage = useCallback(async (userText) => {
     if (!userText.trim() || isLoading) return;
 
+    console.log('Gemini KEY loaded:', !!API_KEY);
+
+    if (!API_KEY) {
+      setError('API key not configured. Please contact support.');
+      return;
+    }
+
     setError(null);
 
     const userMsg = { role: 'user', content: userText.trim(), id: Date.now() };
@@ -22,31 +60,48 @@ export function useChat() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: userText.trim() }),
-      });
+      // Build Gemini conversation history
+      const geminiHistory = updated.map(({ role, content }) => ({
+        role:  role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: content }],
+      }));
+
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`,
+        {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            system_instruction: {
+              parts: [{ text: SYSTEM }]
+            },
+            contents: geminiHistory,
+            generationConfig: {
+              maxOutputTokens: 1000,
+              temperature:     0.7,
+            },
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errData = await response.json().catch(() => ({}));
-        throw new Error(errData?.error || errData?.message || `HTTP ${response.status}`);
+        throw new Error(errData?.error?.message || `HTTP ${response.status}`);
       }
 
-      const data = await response.json();
-      const reply = data.reply || 'Sorry, I could not generate a response.';
+      const data    = await response.json();
+      const reply   = data.candidates?.[0]?.content?.parts?.[0]?.text
+                      || 'Sorry, I could not generate a response.';
 
       const assistantMsg = {
-        role: 'assistant',
+        role:    'assistant',
         content: reply,
-        id: Date.now() + 1,
+        id:      Date.now() + 1,
       };
       syncMessages([...updated, assistantMsg]);
 
     } catch (err) {
-      console.error('Chat API error:', err);
+      console.error('Gemini error:', err);
       setError(err.message || 'Connection error. Please check your internet.');
       syncMessages(messagesRef.current.filter((m) => m.id !== userMsg.id));
     } finally {
