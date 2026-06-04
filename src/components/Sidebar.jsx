@@ -48,9 +48,11 @@ export default function Sidebar({ history, activeChatId, onNewChat, onSelectChat
         <div className="sidebar__footer-badge">
           <span className="sidebar__status-dot" />
           AI Agent Active
-        </div>        <div className="sidebar__qr">
-          <QRCode value="https://vercel.com/website11/bc-course-finderss/5VEKVJWVxgRG21bXZV1Xpi2ixXmQ" size={80} />
-        </div>        <p className="sidebar__footer-copy">Belgium Campus · v1.0</p>
+        </div>
+        <div className="sidebar__qr">
+          <QRCode value="https://bc-coursefinder-k1el.vercel.app/" size={80} />
+        </div>
+        <p className="sidebar__footer-copy">Belgium Campus · v1.0</p>
       </div>
     </aside>
   );
